@@ -55,7 +55,7 @@ To run the SMS Spam Detection app on your local machine, follow these steps:
 1.	Clone the repository:
 bash
 Copy
-git clone https://github.com/your-username/sms-spam-detection.git
+git clonehttps://github.com/jijendhar-g/SMS-Spam-Detection
 2.	Install required dependencies:
 bash
 Copy
