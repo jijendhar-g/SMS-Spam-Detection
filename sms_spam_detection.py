@@ -5,15 +5,14 @@ import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-# Ensure 'punkt' is downloaded, not 'punkt_tab'
-nltk.download('punkt')  # Correct tokenizer download
-nltk.download('stopwords')  # Download stopwords corpus
+nltk.download('punkt')
+nltk.download('stopwords')
 
 ps = PorterStemmer()
 
 def transform_text(text):
     text = text.lower()
-    text = nltk.word_tokenize(text)  # Tokenization happens here
+    text = nltk.word_tokenize(text)
 
     y = []
     for i in text:
@@ -35,7 +34,7 @@ def transform_text(text):
 
     return " ".join(y)
 
-# Load vectorizer and model
+# Load the vectorizer and model
 vectorizer = pickle.load(open("vectorizer.pkl", 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
 
@@ -123,12 +122,10 @@ if predict_button:
                 unsafe_allow_html=True,
             )
 
-# Clear button functionality - Clears both input text and prediction result
 if clear_button:
-    # Reset the session state variables
+    # Clear the input and prediction result
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
-    st.rerun()  # Forces a refresh of the app
 
 st.markdown("---")
 st.markdown(
