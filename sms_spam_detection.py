@@ -120,7 +120,8 @@ if predict_button:
 if clear_button:
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
-    st.experimental_rerun()  # This triggers the page to rerun and reset everything
+    st.experimental_set_query_params(reset=True)
+
 
 st.markdown("---")
 st.markdown(
