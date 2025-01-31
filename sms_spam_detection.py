@@ -1,18 +1,15 @@
 import nltk
 import streamlit as st
-import pickle 
+import pickle
 import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-# Download necessary NLTK resources
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# Initialize Porter Stemmer
 ps = PorterStemmer()
 
-# Preprocessing function
 def transform_text(text):
     text = text.lower()
     text = nltk.word_tokenize(text)
@@ -37,14 +34,16 @@ def transform_text(text):
 
     return " ".join(y)
 
-# Load pre-trained vectorizer and model
 vectorizer = pickle.load(open("vectorizer.pkl", 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
 
-# Streamlit App Interface
+if 'input_sms' not in st.session_state:
+    st.session_state.input_sms = ""
+if 'prediction_result' not in st.session_state:
+    st.session_state.prediction_result = ""
+
 st.set_page_config(page_title="SMS Spam Detection", page_icon="📩", layout="centered")
 
-# Custom CSS for styling
 st.markdown(
     """
     <style>
@@ -79,27 +78,32 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Header Section
 st.markdown("<h1 class='main-heading'>📩 SMS Spam Detection App</h1>", unsafe_allow_html=True)
 st.write("**Detect whether an SMS is Spam or Not in just seconds!**")
 st.write("---")
 
-# Input Section
 st.header("Enter the SMS Below:")
-input_sms = st.text_area("💬 Your SMS Message", placeholder="Type your message here...", height=150)
 
-if st.button('🔍 Predict'):
+input_sms = st.text_area("💬 Your SMS Message", value=st.session_state.input_sms, placeholder="Type your message here...", height=150)
+
+col1, col2 = st.columns([1, 1])
+with col1:
+    predict_button = st.button('🔍 Predict')
+with col2:
+    clear_button = st.button('🧹 Clear')
+
+if predict_button:
     if input_sms.strip() == "":
         st.warning("⚠️ Please enter a message to classify!")
     else:
-        # 1. Preprocess
+        st.session_state.input_sms = input_sms
+        
         transformed_sms = transform_text(input_sms)
-        # 2. Vectorize
         vector_input = vectorizer.transform([transformed_sms])
-        # 3. Predict
         result = model.predict(vector_input)[0]
 
-        # 4. Display Result
+        st.session_state.prediction_result = result
+
         st.write("---")
         if result == 1:
             st.markdown(
@@ -112,12 +116,15 @@ if st.button('🔍 Predict'):
                 unsafe_allow_html=True,
             )
 
-# Footer Section
+if clear_button:
+    st.session_state.input_sms = ""
+    st.session_state.prediction_result = ""
+
 st.markdown("---")
 st.markdown(
     """
     <div class='footer'>
-    👨‍💻 Developed by <strong>Edunet Foundation</strong><br>
+    👨‍💻 Developed by <strong>GJ Technologies </strong><br>
     📚 Powered by Natural Language Processing
     </div>
     """,
