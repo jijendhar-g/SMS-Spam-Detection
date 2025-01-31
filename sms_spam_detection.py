@@ -1,14 +1,4 @@
 import nltk
-import os
-
-nltk_data_path = os.path.expanduser("~") + "/nltk_data"
-if not os.path.exists(nltk_data_path):
-    os.makedirs(nltk_data_path)
-
-nltk.data.path.append(nltk_data_path)
-nltk.download('punkt', download_dir=nltk_data_path)
-nltk.download('stopwords', download_dir=nltk_data_path)
-import nltk
 import streamlit as st
 import pickle
 import string
@@ -102,6 +92,7 @@ with col1:
 with col2:
     clear_button = st.button('🧹 Clear')
 
+# Button functionality
 if predict_button:
     if input_sms.strip() == "":
         st.warning("⚠️ Please enter a message to classify!")
@@ -129,7 +120,7 @@ if predict_button:
 if clear_button:
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
-    st.empty()
+    st.experimental_rerun()  # This triggers the page to rerun and reset everything
 
 st.markdown("---")
 st.markdown(
