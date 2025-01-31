@@ -119,6 +119,7 @@ if predict_button:
 if clear_button:
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
+    st.empty()
 
 st.markdown("---")
 st.markdown(
