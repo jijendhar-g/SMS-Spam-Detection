@@ -92,7 +92,6 @@ with col1:
 with col2:
     clear_button = st.button('🧹 Clear')
 
-# Button functionality
 if predict_button:
     if input_sms.strip() == "":
         st.warning("⚠️ Please enter a message to classify!")
@@ -120,8 +119,7 @@ if predict_button:
 if clear_button:
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
-    st.experimental_set_query_params(reset=True)
-
+    st.empty()
 
 st.markdown("---")
 st.markdown(
