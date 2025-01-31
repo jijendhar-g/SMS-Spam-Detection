@@ -123,7 +123,6 @@ if predict_button:
             )
 
 if clear_button:
-    # Clear the input and prediction result
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
 
