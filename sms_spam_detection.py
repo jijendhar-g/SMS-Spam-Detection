@@ -5,13 +5,15 @@ import string
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-nltk.download('punkt')  
-nltk.download('stopwords')  
+# Ensure 'punkt' is downloaded, not 'punkt_tab'
+nltk.download('punkt')  # Correct tokenizer download
+nltk.download('stopwords')  # Download stopwords corpus
+
 ps = PorterStemmer()
 
 def transform_text(text):
     text = text.lower()
-    text = nltk.word_tokenize(text)
+    text = nltk.word_tokenize(text)  # Tokenization happens here
 
     y = []
     for i in text:
@@ -33,9 +35,11 @@ def transform_text(text):
 
     return " ".join(y)
 
+# Load vectorizer and model
 vectorizer = pickle.load(open("vectorizer.pkl", 'rb'))
 model = pickle.load(open("model.pkl", 'rb'))
 
+# Initialize session state variables if they don't exist
 if 'input_sms' not in st.session_state:
     st.session_state.input_sms = ""
 if 'prediction_result' not in st.session_state:
@@ -83,18 +87,22 @@ st.write("---")
 
 st.header("Enter the SMS Below:")
 
+# Use session state to handle input
 input_sms = st.text_area("💬 Your SMS Message", value=st.session_state.input_sms, placeholder="Type your message here...", height=150)
 
+# Create two buttons for prediction and clearing the input
 col1, col2 = st.columns([1, 1])
 with col1:
     predict_button = st.button('🔍 Predict')
 with col2:
     clear_button = st.button('🧹 Clear')
 
+# Button functionality
 if predict_button:
     if input_sms.strip() == "":
         st.warning("⚠️ Please enter a message to classify!")
     else:
+        # Update session state with input text
         st.session_state.input_sms = input_sms
         
         transformed_sms = transform_text(input_sms)
@@ -115,10 +123,13 @@ if predict_button:
                 unsafe_allow_html=True,
             )
 
+# Clear button functionality - Clears both input text and prediction result
 if clear_button:
+    # Reset the session state variables
     st.session_state.input_sms = ""
     st.session_state.prediction_result = ""
-    st.rerun()  
+    st.rerun()  # Forces a refresh of the app
+
 st.markdown("---")
 st.markdown(
     """
